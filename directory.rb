@@ -4,10 +4,8 @@ def print_header
 end
 
 def print(students)
-  students.each do |student|
-    if student[:name].length < 12
-      puts "#{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  for student in students
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
