@@ -4,9 +4,22 @@ def print_header
 end
 
 def print(students)
-  for student in students
-    puts "#{student[:name]} from #{student[:country]} (#{student[:cohort]} cohort)".center(100)
+
+  student_hash = {}
+
+  students.each do |student|
+    cohort = student[:cohort]
+    if student_hash[cohort] == nil
+      student_hash[cohort] = []
+    end
+    student_hash[cohort].push(student[:name])
   end
+
+  puts student_hash.map { |k, v|
+    puts "#{k.capitalize}" " cohort:".center(100)
+    puts v.map { |name| name.to_s.center(100) }
+  }
+
 end
 
 def print_footer(students)
@@ -41,7 +54,7 @@ def input_students
         end
       end
     # add the student hash to the array
-    students << {name: name.to_sym, country: country.to_sym, cohort: cohort.to_sym}
+    students << {name: name, country: country, cohort: cohort.to_sym}
     puts "Now we have #{students.count} students, enter another name or press return to finish"
     # get another name from the user
     name = gets.chomp
