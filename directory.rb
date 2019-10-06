@@ -37,22 +37,22 @@ def input_students
   # create an empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.strip
   # while the name is not empty, repeat this code
   while !name.empty? do
     puts "Please enter the student's country of origin"
-    country = gets.chomp
+    country = gets.strip
       if country == ""
         country = "UK"
       end
     puts "Please enter the student's cohort"
-    cohort = gets.chomp.downcase
+    cohort = gets.strip.downcase
       if cohort == ""
         cohort = "november"
       end
       while !existing_cohorts.include?(cohort.downcase) do
         puts "Sorry, that cohort doesn't exist, please try again"
-        cohort = gets.chomp.downcase
+        cohort = gets.strip.downcase
         if existing_cohorts.include?(cohort.downcase)
           break
         end
@@ -65,7 +65,7 @@ def input_students
       puts "Now we have #{students.count} students, enter another name or press return to finish"
     end
     # get another name from the user
-    name = gets.chomp
+    name = gets.strip
   end
   # return the array of students
   students
