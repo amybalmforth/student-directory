@@ -1,6 +1,9 @@
-def print_header
-  puts "The students of Villains Academy".center(100)
-  puts "-------------".center(100)
+
+def print_header(students)
+  if students.length > 0
+    puts "The students of Villains Academy".center(100)
+    puts "-------------".center(100)
+  end
 end
 
 def print(students)
@@ -15,7 +18,7 @@ def print(students)
     student_hash[cohort].push(student[:name])
   end
 
-  puts student_hash.map { |k, v|
+    puts student_hash.map { |k, v|
     puts "#{k.capitalize}" " cohort:".center(100)
     puts v.map { |name| name.to_s.center(100) }
   }
@@ -23,10 +26,12 @@ def print(students)
 end
 
 def print_footer(students)
-  if students.count <= 1
-    puts "Overall, we have #{students.count} great student".center(100)
-  else
+  if students.count > 1
     puts "Overall, we have #{students.count} great students".center(100)
+  elsif students.count == 1
+    puts "Overall, we have #{students.count} great student".center(100)
+  elsif students.count == 0
+    puts "We have no students".center(100)
   end
 end
 
@@ -72,6 +77,6 @@ def input_students
 end
 
 students = input_students
-print_header
+print_header(students)
 print(students)
 print_footer(students)
