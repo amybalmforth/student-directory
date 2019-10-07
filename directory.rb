@@ -1,37 +1,49 @@
+@students = []
+
 def interactive_menu
-  students = []
   loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    selection = gets.chomp
-    case selection
-    when "1"
-      students = input_students
-    when "2"
-      print_header(students)
-      print(students)
-      print_footer(students)
-    when "9"
-      exit
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
-def print_header(students)
-  if students.length > 0
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit
+  else
+    puts "I don't know what you mean, try again"
+  end
+end
+
+def print_header
+  if @students.length > 0
     puts "The students of Villains Academy".center(100)
     puts "-------------".center(100)
   end
 end
 
-def print(students)
+def print_students_list
 
   student_hash = {}
 
-  students.each do |student|
+  @students.each do |student|
     cohort = student[:cohort]
     if student_hash[cohort] == nil
       student_hash[cohort] = []
@@ -46,12 +58,12 @@ def print(students)
 
 end
 
-def print_footer(students)
-  if students.count > 1
-    puts "Overall, we have #{students.count} great students".center(100)
-  elsif students.count == 1
-    puts "Overall, we have #{students.count} great student".center(100)
-  elsif students.count == 0
+def print_footer
+  if @students.count > 1
+    puts "Overall, we have #{@students.count} great students".center(100)
+  elsif @students.count == 1
+    puts "Overall, we have #{@students.count} great student".center(100)
+  elsif @students.count == 0
     puts "We have no students".center(100)
   end
 end
@@ -60,11 +72,7 @@ def input_students
   existing_cohorts = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
   puts "Please enter the name of a student"
   puts "To finish, just hit return twice"
-  # create an empty array
-  students = []
-  # get the first name
   name = gets.strip
-  # while the name is not empty, repeat this code
   while !name.empty? do
     puts "Please enter the student's country of origin"
     country = gets.strip
@@ -83,18 +91,15 @@ def input_students
           break
         end
       end
-    # add the student hash to the array
-    students << {name: name, country: country, cohort: cohort.to_sym}
-    if students.count <= 1
-      puts "Now we have #{students.count} student, enter another name or press return to finish"
+    @students << {name: name, country: country, cohort: cohort.to_sym}
+    if @students.count <= 1
+      puts "Now we have #{@students.count} student, enter another name or press return to finish"
     else
-      puts "Now we have #{students.count} students, enter another name or press return to finish"
+      puts "Now we have #{@students.count} students, enter another name or press return to finish"
     end
-    # get another name from the user
     name = gets.strip
   end
-  # return the array of students
-  students
+  @students
 end
 
 interactive_menu
