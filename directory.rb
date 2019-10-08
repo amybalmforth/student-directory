@@ -38,11 +38,28 @@ def process(selection)
   end
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
+def load_students
+  puts "Which file do you want to load?"
+  file = STDIN.gets.chomp
+  file = File.open(file, "r")
   file.readlines.each do |line|
     @name, cohort = line.chomp.split(',')
     write_students
+  end
+  file.close
+end
+
+def save_students
+  puts "Which file do you want to save to?"
+  file = STDIN.gets.chomp
+  # open the file for writing
+  file = File.open(file, "w")
+  #file = File.open("students.csv", "w")
+  # iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
   end
   file.close
 end
@@ -56,7 +73,7 @@ def input_students
   while !@name.empty? do
     # add the student hash to the array
     write_students
-    puts "Added #{@students.count} students"
+    puts "Added student, now #{@students.count} students total"
     # get another name from the user
     @name = STDIN.gets.chomp
   end
@@ -87,34 +104,19 @@ def print_footer
   puts "Overall, we have #{@students.count} great students".center(100)
 end
 
-def save_students
-  # open the file for writing
-  file = File.open("students.csv", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
-  file.close
-end
-
 def delete_students # delete the list of students from CSV
   file = File.open("students.csv", "w")
   @students.clear
   file.close
 end
 
-def try_load_students(filename = "students.csv")
-  filename = ARGV.first
-  if filename.nil?
-    filename = "students.csv"
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
-  elsif File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
-  else
+  else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
