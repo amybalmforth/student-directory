@@ -5,6 +5,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
+  puts "5. Delete the list from students.csv"
   puts "9. Exit" # because we'll be adding more items
 end
 
@@ -25,6 +26,8 @@ def process(selection)
     save_students
   when "4"
     load_students
+  when "5"
+    delete_students
   when "9"
     exit # this will cause the program to terminate
   else
@@ -90,6 +93,12 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  file.close
+end
+
+def delete_students # delete the list of students from CSV
+  file = File.open("students.csv", "w")
+  @students.clear
   file.close
 end
 
