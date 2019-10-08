@@ -1,4 +1,19 @@
-@students = []
+@students = [] # an empty array accessible to all methods
+
+def input_students
+  puts "Please enter the names of the students"
+  puts "To finish, just hit return twice"
+  # get the first name
+  name = gets.chomp
+  # while the name is not empty, repeat this code
+  while !name.empty? do
+    # add the student hash to the array
+    @students << {name: name, cohort: :november}
+    puts "Now we have #{@students.count} students"
+    # get another name from the user
+    name = gets.chomp
+  end
+end
 
 def interactive_menu
   loop do
@@ -10,12 +25,13 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "9. Exit"
+  puts "3. Save the list to students.csv"
+  puts "9. Exit" # because we'll be adding more items
 end
 
 def show_students
   print_header
-  print_students_list
+  print_student_list
   print_footer
 end
 
@@ -25,81 +41,40 @@ def process(selection)
     input_students
   when "2"
     show_students
+  when "3"
+    save_students
   when "9"
-    exit
+    exit # this will cause the program to terminate
   else
     puts "I don't know what you mean, try again"
   end
 end
 
 def print_header
-  if @students.length > 0
-    puts "The students of Villains Academy".center(100)
-    puts "-------------".center(100)
+  puts "The students of Villains Academy"
+  puts "-------------"
+end
+
+def print_student_list
+  @students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
-def print_students_list
-
-  student_hash = {}
-
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  # iterate over the array of students
   @students.each do |student|
-    cohort = student[:cohort]
-    if student_hash[cohort] == nil
-      student_hash[cohort] = []
-    end
-    student_hash[cohort].push(student[:name])
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
   end
-
-    puts student_hash.map { |k, v|
-    puts "#{k.capitalize}" " cohort:".center(100)
-    puts v.map { |name| name.to_s.center(100) }
-  }
-
+  file.close
 end
 
 def print_footer
-  if @students.count > 1
-    puts "Overall, we have #{@students.count} great students".center(100)
-  elsif @students.count == 1
-    puts "Overall, we have #{@students.count} great student".center(100)
-  elsif @students.count == 0
-    puts "We have no students".center(100)
-  end
-end
-
-def input_students
-  existing_cohorts = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
-  puts "Please enter the name of a student"
-  puts "To finish, just hit return twice"
-  name = gets.strip
-  while !name.empty? do
-    puts "Please enter the student's country of origin"
-    country = gets.strip
-      if country == ""
-        country = "UK"
-      end
-    puts "Please enter the student's cohort"
-    cohort = gets.strip.downcase
-      if cohort == ""
-        cohort = "november"
-      end
-      while !existing_cohorts.include?(cohort.downcase) do
-        puts "Sorry, that cohort doesn't exist, please try again"
-        cohort = gets.strip.downcase
-        if existing_cohorts.include?(cohort.downcase)
-          break
-        end
-      end
-    @students << {name: name, country: country, cohort: cohort.to_sym}
-    if @students.count <= 1
-      puts "Now we have #{@students.count} student, enter another name or press return to finish"
-    else
-      puts "Now we have #{@students.count} students, enter another name or press return to finish"
-    end
-    name = gets.strip
-  end
-  @students
+  puts "Overall, we have #{@students.count} great students"
 end
 
 interactive_menu
