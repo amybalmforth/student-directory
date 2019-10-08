@@ -102,13 +102,16 @@ def delete_students # delete the list of students from CSV
   file.close
 end
 
-def try_load_students
-  filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exists?(filename) # if it exists
+def try_load_students(filename = "students.csv")
+  filename = ARGV.first
+  if filename.nil?
+    filename = "students.csv"
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
+  elsif File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
