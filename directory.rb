@@ -24,10 +24,13 @@ def process(selection)
     show_students
   when "3"
     save_students
+    puts "List of students was saved to students.csv, #{@students.count} total students on list"
   when "4"
     load_students
+    puts "Loaded students from students.csv, #{@students.count} total students on list"
   when "5"
     delete_students
+    puts "Deleted all students from students.csv, #{@students.count} total students on list"
   when "9"
     exit # this will cause the program to terminate
   else
@@ -45,7 +48,7 @@ def load_students(filename = "students.csv")
 end
 
 def input_students
-  puts "Please enter the names of the students"
+  puts "Please enter the names of the students you wish to add"
   puts "To finish, just hit return twice"
   # get the first name
   @name = STDIN.gets.chomp
@@ -53,7 +56,7 @@ def input_students
   while !@name.empty? do
     # add the student hash to the array
     write_students
-    puts "Now we have #{@students.count} students"
+    puts "Added #{@students.count} students"
     # get another name from the user
     @name = STDIN.gets.chomp
   end
@@ -70,18 +73,18 @@ def show_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(100)
+  puts "-------------".center(100)
 end
 
 def print_student_list
   @students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    puts "#{student[:name]} (#{student[:cohort]} cohort)".center(100)
   end
 end
 
 def print_footer
-  puts "Overall, we have #{@students.count} great students"
+  puts "Overall, we have #{@students.count} great students".center(100)
 end
 
 def save_students
