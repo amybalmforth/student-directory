@@ -1,3 +1,6 @@
+
+require 'csv'
+
 @students = [] # an empty array accessible to all methods
 
 def print_menu
@@ -41,11 +44,9 @@ end
 def load_students
   puts "Which file do you want to load?"
   file = STDIN.gets.chomp
-  File.open(file, "r") do |f|
-    f.readlines.each do |line|
-    @name, cohort = line.chomp.split(',')
+  CSV.foreach(file) do |row|
+    @name, cohort = row.shift
     write_students
-    end
   end
 end
 
@@ -53,13 +54,12 @@ def save_students
   puts "Which file do you want to save to?"
   file = STDIN.gets.chomp
   # open the file for writing
-  File.open(file, "w") do |f|
-  #file = File.open("students.csv", "w")
+  CSV.open(file, "wb") do |csv|
   # iterate over the array of students
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      f.puts csv_line
+      csv_line = student_data
+      csv.puts csv_line
     end
   end
 end
@@ -105,7 +105,7 @@ def print_footer
 end
 
 def delete_students # delete the list of students from CSV
-  File.open("students.csv", "w") do |f|
+  CSV.open("students.csv", "w") do |csv|
   @students.clear
   end
 end
