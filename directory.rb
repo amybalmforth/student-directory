@@ -41,27 +41,27 @@ end
 def load_students
   puts "Which file do you want to load?"
   file = STDIN.gets.chomp
-  file = File.open(file, "r")
-  file.readlines.each do |line|
+  File.open(file, "r") do |f|
+    f.readlines.each do |line|
     @name, cohort = line.chomp.split(',')
     write_students
+    end
   end
-  file.close
 end
 
 def save_students
   puts "Which file do you want to save to?"
   file = STDIN.gets.chomp
   # open the file for writing
-  file = File.open(file, "w")
+  File.open(file, "w") do |f|
   #file = File.open("students.csv", "w")
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      f.puts csv_line
+    end
   end
-  file.close
 end
 
 def input_students
@@ -105,9 +105,9 @@ def print_footer
 end
 
 def delete_students # delete the list of students from CSV
-  file = File.open("students.csv", "w")
+  File.open("students.csv", "w") do |f|
   @students.clear
-  file.close
+  end
 end
 
 def try_load_students
