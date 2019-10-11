@@ -1,5 +1,3 @@
-File.open(__FILE__, "r") do |file|
-  file.readlines.each do |line|
-    puts line
-  end
-end
+# read current file using File object
+
+puts File.read(__FILE__)
